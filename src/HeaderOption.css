@@ -1,0 +1,24 @@
+.headerOption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 20px;
+  color: #666666;
+  cursor: pointer;
+}
+
+.headerOption__title {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.headerOption__icon {
+  object-fit: contain; /* Ovo zadrzava kvalitetu slike */
+  height: 25px !important; /* important - Zato jer prelazi preko svake ikonice i mijenja ih*/
+  width: 25px !important;
+}
+
+.headerOption:hover {
+  color: black;
+  transition: all 0.2s;
+}
