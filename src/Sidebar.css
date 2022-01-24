@@ -1,7 +1,7 @@
 .sidebar {
-  position: sticky; /* Da ostane na ekranu iako se skrola*/
+  position: sticky;
   top: 80px;
-  flex: 20%; /* Uzima 20^% ekrana ovaj dio, 60% ce uzet Feed i 20% Widgets */
+  flex: 0.2;
   border-radius: 10px;
   text-align: center;
   height: fit-content;

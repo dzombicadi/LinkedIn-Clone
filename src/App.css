@@ -6,5 +6,13 @@
 }
 
 .app__body {
+  /* ============= */
+  /* BUG FIX */
+  /* ============= */
+
   display: flex;
+  margin-top: 25px; /* odvoji ga od headera 35px */
+  min-width: 1200px; /* postavlja najmanju sirinu ovih elementa skupa na 1200 px, ako se ovo izbrise, elementi odlaze u sredinu */
+  margin-left: 20px; /* odvaja sa lijeva 20px citav body */
+  margin-right: 20px; /* odvaja sa desna 20px citav body */
 }
