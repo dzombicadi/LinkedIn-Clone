@@ -1,17 +1,97 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { login } from "./features/userSlice";
+import { auth } from "./firebase";
 import "./Login.css";
 
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [profilePic, setProfilePic] = useState("");
+
+  const dispatch = useDispatch();
+
+  const loginToApp = (e) => {
+    e.preventDefault();
+  };
+
+  const register = () => {
+    // if name value is equal to null
+    if (!name) {
+      return alert("Please enter a full name");
+    }
+
+    // After you created user on firebase with email and password, .THEN update that user his displayName with variable name (variable above) and update his photoURL to profilePic variable name (variable above)
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((userAuth) => {
+        userAuth.user
+          .updateProfile({
+            displayName: name,
+            photoURL: profilePic,
+          })
+          .then(() => {
+            dispatch(
+              login({
+                email: userAuth.user.email,
+                uid: userAuth.user.uid,
+                displayName: name,
+                photoURL: profilePic,
+              })
+            );
+          });
+      })
+      .catch((error) => alert(error));
+  };
+
   return (
     <div className="login">
       <img
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/LinkedIn_Logo.svg/1920px-LinkedIn_Logo.svg.png"
+        src="https://ieeer8.org/wp-content/uploads/2012/01/linkedin-logo-1024x289.png"
         alt=""
       />
 
       <form>
-        <input type="text" />
+        <input
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Full name (required if registering)"
+          type="text"
+        />
+
+        <input
+          value={profilePic}
+          onChange={(e) => setProfilePic(e.target.value)}
+          placeholder="Profile pic URL (optional)"
+          type="text"
+        />
+
+        <input
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+          type="email"
+        />
+
+        <input
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+          type="password"
+        />
+
+        <button type="submit" onClick={loginToApp}>
+          Sign in
+        </button>
       </form>
+
+      <p>
+        Not a member ?{" "}
+        <span className="login__register" onClick={register}>
+          Register Now
+        </span>
+      </p>
     </div>
   );
 }
