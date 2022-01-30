@@ -8,6 +8,9 @@
 # testing
 /coverage
 
+# my things
+/src/tricks.txt
+
 # production
 /build
 

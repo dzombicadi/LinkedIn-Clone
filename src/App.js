@@ -7,6 +7,7 @@ import Header from "./Header";
 import Login from "./Login";
 import Sidebar from "./Sidebar";
 import { auth } from "./firebase";
+import Widgets from "./Widgets";
 
 function App() {
   const user = useSelector(selectUser);
@@ -39,10 +40,13 @@ function App() {
       {!user ? (
         <Login />
       ) : (
+        // ? - IF user value is null THEN show only Login page,
+        // : - ELSE show sidebar,feed,widgets etc.
         <div className="app__body">
           <Sidebar />
           <Feed />
           {/* <Widgets /> */}
+          <Widgets />
         </div>
       )}
     </div>

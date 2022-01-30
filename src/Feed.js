@@ -9,8 +9,13 @@ import CalendarViewDayIcon from "@mui/icons-material/CalendarViewDay";
 import Post from "./Post.js";
 import { db } from "./firebase";
 import firebase from "firebase";
+import { useSelector } from "react-redux";
+import { selectUser } from "./features/userSlice";
+import FlipMove from "react-flip-move";
 
 function Feed() {
+  const user = useSelector(selectUser);
+
   const [input, setInput] = useState("");
   const [posts, setPosts] = useState([]);
 
@@ -22,14 +27,14 @@ function Feed() {
   useEffect(() => {
     db.collection("posts")
       .orderBy("timestamp", "desc")
-      .onSnapshot((snapshot) => {
+      .onSnapshot((snapshot) =>
         setPosts(
           snapshot.docs.map((doc) => ({
             id: doc.id,
             data: doc.data(),
           }))
-        );
-      });
+        )
+      );
   }, []);
 
   // e - stands for event
@@ -40,11 +45,11 @@ function Feed() {
 
     // makes post and sends all these informations to db
     db.collection("posts").add({
-      name: "Sonny Sangha",
-      description: "this is a test",
+      name: user.displayName,
+      description: user.email,
       message: input,
-      photoUrl: "",
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(), // this will take timestamp FROM THE SERVER'S DATABASE, because time is relative from zone to zone
+      photoUrl: user.photoUrl || "",
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
 
     // clears the input when we submit
@@ -80,15 +85,19 @@ function Feed() {
       </div>
 
       {/* This will go through all posts from database, take their values and pass them to <Post/> function and it will do that until it displays all of them */}
-      {posts.map(({ id, data: { name, description, message, photoUrl } }) => (
-        <Post
-          key={id}
-          name={name}
-          description={description}
-          message={message}
-          photoUrl={photoUrl}
-        />
-      ))}
+
+      {/* react flip move implemented, other stuff is in Post.js */}
+      <FlipMove>
+        {posts.map(({ id, data: { name, description, message, photoUrl } }) => (
+          <Post
+            key={id}
+            name={name}
+            description={description}
+            message={message}
+            photoUrl={photoUrl}
+          />
+        ))}
+      </FlipMove>
 
       {/* Post used as example */}
       {/* <Post
